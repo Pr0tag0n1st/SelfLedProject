@@ -1,3 +1,6 @@
+#include <iostream>
+using namespace std;
+#include <fstream>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_acodec.h>
 #include <allegro5/allegro_audio.h>
@@ -7,9 +10,11 @@
 
 enum difficulty{EASY, NORMAL, HARD, INSANE};
 enum directions{UP, DOWN, LEFT, RIGHT};
-void roll(int x, int y, int dir, int time, bool collision);
+//void roll(int x, int y, int dir, int time, bool collision);
+
 
 int main() {
+	
 	int screenwidth = 1200;
 	int screenheight = 800;
 	int playersize = 40;
