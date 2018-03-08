@@ -7,9 +7,10 @@ using namespace std;
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_image.h>
 //enum characters { PLAYER1, PLAYER2 };
 //enum difficulty{EASY, NORMAL, HARD, INSANE};
-//enum directions{UP, DOWN, LEFT, RIGHT};
+enum directions{UP, DOWN, LEFT, RIGHT};
 //enum stages{EXTRA, STAGE1, STAGE2, STAGE3, STAGE4, STAGE5, STAGE6};
 //void roll(int x, int y, int dir, int time, bool collision);
 //class players {
@@ -23,6 +24,7 @@ using namespace std;
 //};
 
 int main() {
+	bool pause = false;
 	bool redraw = false;
 	int screenwidth = 1200;
 	int screenheight = 800;
@@ -31,8 +33,8 @@ int main() {
 	int movespeed = 6;
 	int playersize = 40;
 	int hitboxsize = 4;
-	int itemsize = 10;
-	int largeitemsize = 20;
+	//int itemsize = 10;
+	//int largeitemsize = 20;
 //	int stage = 1;
 	bool keys[8]{ false, false, false, false, false, false, false, false};
 //	bool focus = false;
@@ -43,39 +45,44 @@ int main() {
 	al_init_acodec_addon();
 	al_init_font_addon();
 	al_init_ttf_addon();
+	al_init_image_addon();
 
 	ALLEGRO_DISPLAY* display = al_create_display(screenwidth, screenheight);
 	ALLEGRO_BITMAP* pc1 = al_create_bitmap(playersize, playersize);
 //	ALLEGRO_BITMAP* pc2 = al_create_bitmap(playersize + 20, playersize + 20);
 	ALLEGRO_BITMAP* pc1_hitbox = al_create_bitmap(hitboxsize, hitboxsize);
 //	ALLEGRO_BITMAP* pc2_hitbox = al_create_bitmap(hitboxsize, hitboxsize);
-	ALLEGRO_TIMER* timer = al_create_timer(0.2);
+	ALLEGRO_TIMER* timer = al_create_timer(0.02);
 	ALLEGRO_FONT* font = NULL;
 	ALLEGRO_EVENT_QUEUE*event_queue = al_create_event_queue();
-	al_set_target_backbuffer(display);
-	al_clear_to_color(al_map_rgb(0, 0, 0));
+	al_install_keyboard();
 	al_set_target_bitmap(pc1);
 	al_clear_to_color(al_map_rgb(255, 200, 200));
+	al_set_target_bitmap(pc1_hitbox);
+	al_clear_to_color(al_map_rgb(255, 255, 255));
+	al_set_target_bitmap(al_get_backbuffer(display));
+	al_clear_to_color(al_map_rgb(0, 0, 0));
+
 	al_register_event_source(event_queue, al_get_display_event_source(display));
 	al_register_event_source(event_queue, al_get_timer_event_source(timer));
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
 	al_flip_display();
 	al_start_timer(timer);
-	while (1) {
+	while (!pause) {
 		ALLEGRO_EVENT ev;
 		al_wait_for_event(event_queue, &ev);
 
 		if (ev.type == ALLEGRO_EVENT_TIMER) {
-			if (keys[UP]) {
+			if (keys[UP]&&player_y > 0) {
 				player_y -= movespeed;
 			}
-			if (keys[DOWN]) {
+			if (keys[DOWN]&& player_y < screenheight-playersize) {
 				player_y += movespeed;
 			}
-			if (keys[LEFT]) {
+			if (keys[LEFT]&& player_x > 0) {
 				player_x -= movespeed;
 			}
-			if (keys[RIGHT]) {
+			if (keys[RIGHT]&& player_x < screenwidth-playersize) {
 				player_x += movespeed;
 			}
 			redraw = true;
@@ -98,6 +105,7 @@ int main() {
 				keys[RIGHT] = true;
 				break;
 			case ALLEGRO_KEY_ESCAPE:
+				pause = true;
 				return 0;
 			}
 			
@@ -122,11 +130,18 @@ int main() {
 			redraw = false;
 
 			al_clear_to_color(al_map_rgb(0, 0, 0));
+			al_draw_bitmap(pc1, player_x + (playersize/2), player_y + (playersize/2), 0);
+			al_draw_bitmap(pc1_hitbox, player_x + (playersize / 2), player_y + (playersize / 2), 0);
 
-			al_draw_bitmap(pc1, player_x - (playersize/2), player_y - (playersize/2), 0);
 			al_flip_display();
+
 		}
 		
 	}
+	al_destroy_bitmap(pc1);
+	al_destroy_bitmap(pc1_hitbox);
+	al_destroy_display(display);
+	al_destroy_timer(timer);
+	al_destroy_event_queue(event_queue);
 	return 0;
 }
