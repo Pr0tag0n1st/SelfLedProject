@@ -23,6 +23,7 @@ enum directions{UP, DOWN, LEFT, RIGHT};
 //
 //};
 
+
 int main() {
 	bool pause = false;
 	bool redraw = false;
@@ -30,14 +31,13 @@ int main() {
 	int screenheight = 800;
 	int player_x = screenwidth / 2;
 	int player_y = (screenheight * 3) / 4;
-	int movespeed = 6;
+	int movespeed = 8;
 	int playersize = 40;
-	int hitboxsize = 4;
+	int hitboxsize = 2;
 	//int itemsize = 10;
 	//int largeitemsize = 20;
 //	int stage = 1;
 	bool keys[8]{ false, false, false, false, false, false, false, false};
-//	bool focus = false;
 	
 	al_init();
 	al_init_primitives_addon();
@@ -85,6 +85,9 @@ int main() {
 			if (keys[RIGHT]&& player_x < screenwidth-playersize) {
 				player_x += movespeed;
 			}
+			if (keys[4]) {
+				movespeed/4;
+			}
 			redraw = true;
 		}
 		else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
@@ -104,6 +107,10 @@ int main() {
 			case ALLEGRO_KEY_RIGHT:
 				keys[RIGHT] = true;
 				break;
+			case ALLEGRO_KEY_LSHIFT:
+				keys[4] = true;
+				break;
+				
 			case ALLEGRO_KEY_ESCAPE:
 				pause = true;
 				return 0;
@@ -124,13 +131,15 @@ int main() {
 			case ALLEGRO_KEY_RIGHT:
 				keys[RIGHT] = false;
 				break;
+			case ALLEGRO_KEY_LSHIFT:
+				keys[4] = false;
 			}
 		}
 		if (redraw && al_is_event_queue_empty(event_queue)) {
 			redraw = false;
 
 			al_clear_to_color(al_map_rgb(0, 0, 0));
-			al_draw_bitmap(pc1, player_x + (playersize/2), player_y + (playersize/2), 0);
+			al_draw_bitmap(pc1, player_x, player_y, 0);
 			al_draw_bitmap(pc1_hitbox, player_x + (playersize / 2), player_y + (playersize / 2), 0);
 
 			al_flip_display();
