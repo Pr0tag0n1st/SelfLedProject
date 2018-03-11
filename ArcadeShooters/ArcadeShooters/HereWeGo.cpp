@@ -11,6 +11,7 @@ using namespace std;
 //enum characters { PLAYER1, PLAYER2 };
 //enum difficulty{EASY, NORMAL, HARD, INSANE};
 enum directions{UP, DOWN, LEFT, RIGHT};
+
 //enum stages{EXTRA, STAGE1, STAGE2, STAGE3, STAGE4, STAGE5, STAGE6};
 //void roll(int x, int y, int dir, int time, bool collision);
 //class players {
@@ -22,7 +23,6 @@ enum directions{UP, DOWN, LEFT, RIGHT};
 //	int ypos;
 //
 //};
-
 
 int main() {
 	bool pause = false;
