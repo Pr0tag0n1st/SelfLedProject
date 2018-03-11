@@ -11,7 +11,6 @@ using namespace std;
 //enum characters { PLAYER1, PLAYER2 };
 //enum difficulty{EASY, NORMAL, HARD, INSANE};
 enum directions{UP, DOWN, LEFT, RIGHT};
-
 //enum stages{EXTRA, STAGE1, STAGE2, STAGE3, STAGE4, STAGE5, STAGE6};
 //void roll(int x, int y, int dir, int time, bool collision);
 //class players {
@@ -34,6 +33,9 @@ int main() {
 	int movespeed = 8;
 	int playersize = 40;
 	int hitboxsize = 4;
+	int shotspeed = 20;
+//	int power = 0;
+//	bool focus = false;
 	//int itemsize = 10;
 	//int largeitemsize = 20;
 //	int stage = 1;
@@ -52,6 +54,7 @@ int main() {
 //	ALLEGRO_BITMAP* pc2 = al_create_bitmap(playersize + 20, playersize + 20);
 	ALLEGRO_BITMAP* pc1_hitbox = al_create_bitmap(hitboxsize, hitboxsize);
 //	ALLEGRO_BITMAP* pc2_hitbox = al_create_bitmap(hitboxsize, hitboxsize);
+	ALLEGRO_BITMAP* shottype = al_create_bitmap(4, 6);
 	ALLEGRO_TIMER* timer = al_create_timer(0.02);
 	ALLEGRO_FONT* font = NULL;
 	ALLEGRO_EVENT_QUEUE*event_queue = al_create_event_queue();
@@ -86,10 +89,10 @@ int main() {
 				player_x += movespeed;
 			}
 			if (keys[4]) {
-				movespeed/4;
 			}
 			if (keys[5]) {
-				cout << "shot" << endl;
+				cout << "shoot" << endl;
+				
 			}
 			redraw = true;
 		}
@@ -141,6 +144,7 @@ int main() {
 			case ALLEGRO_KEY_LSHIFT:
 				keys[4] = false;
 				movespeed = 8;
+				break;
 			case ALLEGRO_KEY_Z:
 				keys[5] = false;
 				break;
@@ -151,8 +155,8 @@ int main() {
 
 			al_clear_to_color(al_map_rgb(0, 0, 0));
 			al_draw_bitmap(pc1, player_x, player_y, 0);
-			al_draw_bitmap(pc1_hitbox, player_x + (playersize / 2)-2, player_y + (playersize / 2)-2, 0);
 
+				al_draw_bitmap(pc1_hitbox, player_x + (playersize / 2) - 2, player_y + (playersize / 2) - 2, 0);
 			al_flip_display();
 
 		}
@@ -165,3 +169,4 @@ int main() {
 	al_destroy_event_queue(event_queue);
 	return 0;
 }
+
