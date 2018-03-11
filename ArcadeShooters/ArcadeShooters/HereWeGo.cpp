@@ -33,7 +33,7 @@ int main() {
 	int player_y = (screenheight * 3) / 4;
 	int movespeed = 8;
 	int playersize = 40;
-	int hitboxsize = 2;
+	int hitboxsize = 4;
 	//int itemsize = 10;
 	//int largeitemsize = 20;
 //	int stage = 1;
@@ -88,6 +88,9 @@ int main() {
 			if (keys[4]) {
 				movespeed/4;
 			}
+			if (keys[5]) {
+				cout << "shot" << endl;
+			}
 			redraw = true;
 		}
 		else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
@@ -109,6 +112,10 @@ int main() {
 				break;
 			case ALLEGRO_KEY_LSHIFT:
 				keys[4] = true;
+				movespeed = 2;
+				break;
+			case ALLEGRO_KEY_Z:
+				keys[5] = true;
 				break;
 				
 			case ALLEGRO_KEY_ESCAPE:
@@ -133,6 +140,10 @@ int main() {
 				break;
 			case ALLEGRO_KEY_LSHIFT:
 				keys[4] = false;
+				movespeed = 8;
+			case ALLEGRO_KEY_Z:
+				keys[5] = false;
+				break;
 			}
 		}
 		if (redraw && al_is_event_queue_empty(event_queue)) {
@@ -140,7 +151,7 @@ int main() {
 
 			al_clear_to_color(al_map_rgb(0, 0, 0));
 			al_draw_bitmap(pc1, player_x, player_y, 0);
-			al_draw_bitmap(pc1_hitbox, player_x + (playersize / 2), player_y + (playersize / 2), 0);
+			al_draw_bitmap(pc1_hitbox, player_x + (playersize / 2)-2, player_y + (playersize / 2)-2, 0);
 
 			al_flip_display();
 
