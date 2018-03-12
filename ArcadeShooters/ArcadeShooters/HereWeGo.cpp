@@ -23,6 +23,12 @@ enum directions{UP, DOWN, LEFT, RIGHT};
 //
 //};
 
+class enemies {
+public:
+	void initEnemy(int x, int y);
+	void drawEnemy(ALLEGRO_BITMAP*image);
+};
+
 int main() {
 	bool pause = false;
 	bool redraw = false;
@@ -155,8 +161,7 @@ int main() {
 
 			al_clear_to_color(al_map_rgb(0, 0, 0));
 			al_draw_bitmap(pc1, player_x, player_y, 0);
-
-				al_draw_bitmap(pc1_hitbox, player_x + (playersize / 2) - 2, player_y + (playersize / 2) - 2, 0);
+			al_draw_bitmap(pc1_hitbox, player_x + (playersize / 2) - 2, player_y + (playersize / 2) - 2, 0);
 			al_flip_display();
 
 		}
