@@ -16,22 +16,32 @@ enum directions{UP, DOWN, LEFT, RIGHT};
 //class players {
 //public:
 //	void initpc(int character, int x, int y);
-//	void drawpc(ALLEGRO_BITMAP);
+//	void drawpc(ALLEGRO_BITMAP*sprite);
+//	
 //private:
 //	int xpos;
 //	int ypos;
-//
+//	int playerwidth;
+//	int playerheight;
+//	int hitboxsize;
+//	ALLEGRO_BITMAP*walkcycle;
+//	bool buttons[8]{ false, false, false, false, false, false, false, false };
+//};
+//Stage enemy class
+//class enemies {
+//public:
+//	void initEnemy(int x, int y);
+//	void drawEnemy(ALLEGRO_BITMAP*image);
+//private:
+//	int x_pos;
+//	int y_pos;
+//	ALLEGRO_BITMAP*sprite;
 //};
 
-class enemies {
-public:
-	void initEnemy(int x, int y);
-	void drawEnemy(ALLEGRO_BITMAP*image);
-};
-
-int main() {
+int main() {//start of main
 	bool pause = false;
 	bool redraw = false;
+	//player info
 	int screenwidth = 1200;
 	int screenheight = 800;
 	int player_x = screenwidth / 2;
@@ -46,7 +56,7 @@ int main() {
 	//int largeitemsize = 20;
 //	int stage = 1;
 	bool keys[8]{ false, false, false, false, false, false, false, false};
-	
+	//allegro addons + variables
 	al_init();
 	al_init_primitives_addon();
 	al_install_audio();
@@ -65,23 +75,24 @@ int main() {
 	ALLEGRO_FONT* font = NULL;
 	ALLEGRO_EVENT_QUEUE*event_queue = al_create_event_queue();
 	al_install_keyboard();
+	//temporary bitmaps that will be updated with sprites later
 	al_set_target_bitmap(pc1);
 	al_clear_to_color(al_map_rgb(255, 200, 200));
 	al_set_target_bitmap(pc1_hitbox);
 	al_clear_to_color(al_map_rgb(255, 255, 255));
 	al_set_target_bitmap(al_get_backbuffer(display));
 	al_clear_to_color(al_map_rgb(0, 0, 0));
-
+	//event sources and timer start
 	al_register_event_source(event_queue, al_get_display_event_source(display));
 	al_register_event_source(event_queue, al_get_timer_event_source(timer));
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
 	al_flip_display();
 	al_start_timer(timer);
-	while (!pause) {
+	while (!pause) {//gameloop
 		ALLEGRO_EVENT ev;
 		al_wait_for_event(event_queue, &ev);
 
-		if (ev.type == ALLEGRO_EVENT_TIMER) {
+		if (ev.type == ALLEGRO_EVENT_TIMER) {//movement algorithm
 			if (keys[UP]&&player_y > 0) {
 				player_y -= movespeed;
 			}
@@ -105,7 +116,7 @@ int main() {
 		else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
 			break;
 		}
-		else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
+		else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {//keypress algorithm
 			switch (ev.keyboard.keycode) {
 			case ALLEGRO_KEY_UP:
 				keys[UP] = true;
@@ -156,7 +167,7 @@ int main() {
 				break;
 			}
 		}
-		if (redraw && al_is_event_queue_empty(event_queue)) {
+		if (redraw && al_is_event_queue_empty(event_queue)) {//render section
 			redraw = false;
 
 			al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -174,4 +185,10 @@ int main() {
 	al_destroy_event_queue(event_queue);
 	return 0;
 }
-
+//void enemies::initEnemy(int x, int y) {
+//	x = x_pos;
+//	y = y_pos;
+//}
+//void enemies::drawEnemy(ALLEGRO_BITMAP*image) {
+//	al_draw_bitmap(image, x_pos, y_pos, 0);
+//}
