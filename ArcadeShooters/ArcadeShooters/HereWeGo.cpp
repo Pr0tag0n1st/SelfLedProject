@@ -8,25 +8,11 @@ using namespace std;
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_image.h>
-//enum characters { PLAYER1, PLAYER2 };
-//enum difficulty{EASY, NORMAL, HARD, INSANE};
+//enum difficulty{EASY, NORMAL, HARD};
 enum directions{UP, DOWN, LEFT, RIGHT};
 //enum stages{EXTRA, STAGE1, STAGE2, STAGE3, STAGE4, STAGE5, STAGE6};
 //void roll(int x, int y, int dir, int time, bool collision);
-//class players {
-//public:
-//	void initpc(int character, int x, int y);
-//	void drawpc(ALLEGRO_BITMAP*sprite);
-//	
-//private:
-//	int xpos;
-//	int ypos;
-//	int playerwidth;
-//	int playerheight;
-//	int hitboxsize;
-//	ALLEGRO_BITMAP*walkcycle;
-//	bool buttons[8]{ false, false, false, false, false, false, false, false };
-//};
+void shoot(int pwrups, ALLEGRO_BITMAP*shot, int xpos, int ypos);
 //Stage enemy class
 //class enemies {
 //public:
@@ -49,8 +35,7 @@ int main() {//start of main
 	int movespeed = 8;
 	int playersize = 40;
 	int hitboxsize = 4;
-	int shotspeed = 20;
-//	int power = 0;
+	int power = 0;
 //	bool focus = false;
 	//int itemsize = 10;
 	//int largeitemsize = 20;
@@ -66,18 +51,14 @@ int main() {//start of main
 	al_init_image_addon();
 
 	ALLEGRO_DISPLAY* display = al_create_display(screenwidth, screenheight);
-	ALLEGRO_BITMAP* pc1 = al_create_bitmap(playersize, playersize);
-//	ALLEGRO_BITMAP* pc2 = al_create_bitmap(playersize + 20, playersize + 20);
+	ALLEGRO_BITMAP* pc1 = al_load_bitmap("pc1walkcycle1.png");
 	ALLEGRO_BITMAP* pc1_hitbox = al_create_bitmap(hitboxsize, hitboxsize);
-//	ALLEGRO_BITMAP* pc2_hitbox = al_create_bitmap(hitboxsize, hitboxsize);
 	ALLEGRO_BITMAP* shottype = al_create_bitmap(4, 6);
 	ALLEGRO_TIMER* timer = al_create_timer(0.02);
 	ALLEGRO_FONT* font = NULL;
 	ALLEGRO_EVENT_QUEUE*event_queue = al_create_event_queue();
 	al_install_keyboard();
 	//temporary bitmaps that will be updated with sprites later
-	al_set_target_bitmap(pc1);
-	al_clear_to_color(al_map_rgb(255, 200, 200));
 	al_set_target_bitmap(pc1_hitbox);
 	al_clear_to_color(al_map_rgb(255, 255, 255));
 	al_set_target_bitmap(al_get_backbuffer(display));
@@ -109,7 +90,7 @@ int main() {//start of main
 			}
 			if (keys[5]) {
 				cout << "shoot" << endl;
-				
+				shoot(power, shottype, player_x, player_y);
 			}
 			redraw = true;
 		}
@@ -192,3 +173,10 @@ int main() {//start of main
 //void enemies::drawEnemy(ALLEGRO_BITMAP*image) {
 //	al_draw_bitmap(image, x_pos, y_pos, 0);
 //}
+void shoot(int pwrups, ALLEGRO_BITMAP*shot, int xpos, int ypos) {
+	int shotspeed = 10;
+	if (pwrups < 10) {
+		al_draw_bitmap(shot, xpos, ypos, 0);
+		ypos += shotspeed;
+	}
+}
