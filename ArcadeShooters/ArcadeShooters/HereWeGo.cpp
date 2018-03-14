@@ -13,7 +13,6 @@ using namespace std;
 enum directions{UP, DOWN, LEFT, RIGHT};
 //enum stages{EXTRA, STAGE1, STAGE2, STAGE3, STAGE4, STAGE5, STAGE6};
 //void roll(int x, int y, int dir, int time, bool collision);
-void shoot(int pwrups, ALLEGRO_BITMAP*shot, int xpos, int ypos);
 //Stage enemy class
 //class enemies {
 //public:
@@ -25,7 +24,20 @@ void shoot(int pwrups, ALLEGRO_BITMAP*shot, int xpos, int ypos);
 //	ALLEGRO_BITMAP*sprite;
 //};
 	//player info
-vector<ALLEGRO_BITMAP>playershots;
+class playershots {
+public:
+	void initShot(int x_pos, int y_pos, int dx, int dy, int pwr);
+	void drawShot(ALLEGRO_BITMAP*shot);
+	void destroyShot(ALLEGRO_BITMAP*shot);
+private:
+	int shot_x;
+	int shot_y;
+	int shot_dx;
+	int shot_dy;
+	int shotrate;
+	int power;
+
+};
 	int screenwidth = 1200;
 	int screenheight = 800;
 	int player_x = screenwidth / 2;
@@ -33,7 +45,6 @@ vector<ALLEGRO_BITMAP>playershots;
 	int movespeed = 8;
 	int playersize = 40;
 	int hitboxsize = 4;
-	int power = 0;
 //	bool focus = false;
 	//int itemsize = 10;
 	//int largeitemsize = 20;
@@ -92,7 +103,7 @@ int main() {//start of main
 			}
 			if (keys[5]) {
 				cout << "shoot" << endl;
-				shoot(power, shottype, player_x, player_y);
+				
 			}
 			redraw = true;
 		}
@@ -176,18 +187,16 @@ int main() {//start of main
 //void enemies::drawEnemy(ALLEGRO_BITMAP*image) {
 //	al_draw_bitmap(image, x_pos, y_pos, 0);
 //}
-void shoot(int pwrups, ALLEGRO_BITMAP*shot, int xpos, int ypos) {
-	int shotspeed = 10;
-	if (pwrups < 10) {
-		al_draw_bitmap(shot, xpos, ypos, 0);
-	}
-	else if (pwrups >= 10 && pwrups < 25){
-		al_draw_bitmap(shot, xpos, ypos, 0);
-		al_draw_bitmap(shot, xpos + playersize, ypos, 0);
-
-	}
-	
-	
-	
-
+void playershots::initShot(int x_pos, int y_pos, int dx, int dy, int pwr) {
+	shot_x = x_pos;
+	shot_y = y_pos;
+	shot_dx = dx;
+	shot_dy = dy;
+	power = pwr;
+}
+void playershots::drawShot(ALLEGRO_BITMAP*shot) {
+	al_draw_bitmap(shot, shot_x, shot_y, 0);
+}
+void playershots::destroyShot(ALLEGRO_BITMAP*shot) {
+	al_destroy_bitmap(shot);
 }
