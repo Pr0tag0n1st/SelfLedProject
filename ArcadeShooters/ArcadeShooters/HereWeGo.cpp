@@ -1,3 +1,4 @@
+#include <vector>
 #include <iostream>
 using namespace std;
 #include <fstream>
@@ -23,11 +24,8 @@ void shoot(int pwrups, ALLEGRO_BITMAP*shot, int xpos, int ypos);
 //	int y_pos;
 //	ALLEGRO_BITMAP*sprite;
 //};
-
-int main() {//start of main
-	bool pause = false;
-	bool redraw = false;
 	//player info
+vector<ALLEGRO_BITMAP>playershots;
 	int screenwidth = 1200;
 	int screenheight = 800;
 	int player_x = screenwidth / 2;
@@ -39,6 +37,10 @@ int main() {//start of main
 //	bool focus = false;
 	//int itemsize = 10;
 	//int largeitemsize = 20;
+int main() {//start of main
+	bool pause = false;
+	bool redraw = false;
+
 //	int stage = 1;
 	bool keys[8]{ false, false, false, false, false, false, false, false};
 	//allegro addons + variables
@@ -153,6 +155,7 @@ int main() {//start of main
 
 			al_clear_to_color(al_map_rgb(0, 0, 0));
 			al_draw_bitmap(pc1, player_x, player_y, 0);
+			al_convert_mask_to_alpha(pc1, al_map_rgb(255, 255, 255));
 			al_draw_bitmap(pc1_hitbox, player_x + (playersize / 2) - 2, player_y + (playersize / 2) - 2, 0);
 			al_flip_display();
 
@@ -177,6 +180,14 @@ void shoot(int pwrups, ALLEGRO_BITMAP*shot, int xpos, int ypos) {
 	int shotspeed = 10;
 	if (pwrups < 10) {
 		al_draw_bitmap(shot, xpos, ypos, 0);
-		ypos += shotspeed;
 	}
+	else if (pwrups >= 10 && pwrups < 25){
+		al_draw_bitmap(shot, xpos, ypos, 0);
+		al_draw_bitmap(shot, xpos + playersize, ypos, 0);
+
+	}
+	
+	
+	
+
 }
