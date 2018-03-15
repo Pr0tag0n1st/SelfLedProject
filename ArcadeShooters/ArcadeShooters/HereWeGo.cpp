@@ -24,6 +24,8 @@ enum directions{UP, DOWN, LEFT, RIGHT};
 //	ALLEGRO_BITMAP*sprite;
 //};
 	//player info
+
+//attack info
 class playershots {
 public:
 	void initShot(int x_pos, int y_pos, int dx, int dy, int pwr);
@@ -45,6 +47,7 @@ private:
 	int movespeed = 8;
 	int playersize = 40;
 	int hitboxsize = 4;
+	int powerscore = 0;
 //	bool focus = false;
 	//int itemsize = 10;
 	//int largeitemsize = 20;
@@ -82,6 +85,8 @@ int main() {//start of main
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
 	al_flip_display();
 	al_start_timer(timer);
+	playershots shot1;
+
 	while (!pause) {//gameloop
 		ALLEGRO_EVENT ev;
 		al_wait_for_event(event_queue, &ev);
@@ -103,7 +108,7 @@ int main() {//start of main
 			}
 			if (keys[5]) {
 				cout << "shoot" << endl;
-				
+				shot1.initShot(player_x, player_y, 0, 10, powerscore);
 			}
 			redraw = true;
 		}
@@ -168,6 +173,7 @@ int main() {//start of main
 			al_draw_bitmap(pc1, player_x, player_y, 0);
 			al_convert_mask_to_alpha(pc1, al_map_rgb(255, 255, 255));
 			al_draw_bitmap(pc1_hitbox, player_x + (playersize / 2) - 2, player_y + (playersize / 2) - 2, 0);
+			shot1.drawShot(shottype);
 			al_flip_display();
 
 		}
@@ -190,13 +196,14 @@ int main() {//start of main
 void playershots::initShot(int x_pos, int y_pos, int dx, int dy, int pwr) {
 	shot_x = x_pos;
 	shot_y = y_pos;
-	shot_dx = dx;
-	shot_dy = dy;
+	dx = shot_dx;
+	dy = shot_dy;
 	power = pwr;
 }
 void playershots::drawShot(ALLEGRO_BITMAP*shot) {
 	al_draw_bitmap(shot, shot_x, shot_y, 0);
 }
 void playershots::destroyShot(ALLEGRO_BITMAP*shot) {
+	if (shot_y < 0)
 	al_destroy_bitmap(shot);
 }
