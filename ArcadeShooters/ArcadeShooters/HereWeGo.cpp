@@ -69,7 +69,7 @@ int main() {//start of main
 	ALLEGRO_DISPLAY* display = al_create_display(screenwidth, screenheight);
 	ALLEGRO_BITMAP* pc1 = al_load_bitmap("pc1walkcycle1.png");
 	ALLEGRO_BITMAP* pc1_hitbox = al_create_bitmap(hitboxsize, hitboxsize);
-	ALLEGRO_BITMAP* shottype = al_create_bitmap(4, 6);
+	ALLEGRO_BITMAP* shottype = al_load_bitmap("shottype.png");
 	ALLEGRO_TIMER* timer = al_create_timer(0.02);
 	ALLEGRO_FONT* font = NULL;
 	ALLEGRO_EVENT_QUEUE*event_queue = al_create_event_queue();
@@ -173,6 +173,7 @@ int main() {//start of main
 			al_draw_bitmap(pc1, player_x, player_y, 0);
 			al_convert_mask_to_alpha(pc1, al_map_rgb(255, 255, 255));
 			al_draw_bitmap(pc1_hitbox, player_x + (playersize / 2) - 2, player_y + (playersize / 2) - 2, 0);
+			al_convert_mask_to_alpha(shottype, al_map_rgb(255, 255, 255));
 			shot1.drawShot(shottype);
 			al_flip_display();
 
